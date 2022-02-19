@@ -1,0 +1,31 @@
+.table {
+  width: 100%;
+  margin: 0px 0px;
+  border: 1px solid black;
+}
+
+.column-row {
+  display: flex;
+  width: 100%;
+}
+
+.table-layout {
+  table-layout: auto;
+  width: 100%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0px;
+}
+
+.pagination-right {
+  margin-left: auto;
+}
+
+.line-item:hover {
+  background-color: grey;
+  opacity: 0.5;
+  cursor: pointer;
+}
