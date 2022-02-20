@@ -19,6 +19,41 @@ query filmsQuery($first: Int, $after: String)  {
         director
         producers
         openingCrawl
+        speciesConnection {
+          totalCount
+          species {
+            name
+            id
+          }
+        }
+        starshipConnection {
+          totalCount
+          starships {
+            name
+            id
+          }
+        }
+        vehicleConnection {
+          totalCount
+          vehicles {
+            name
+            id
+          }
+        }
+        characterConnection {
+          totalCount
+          characters {
+            name
+            id
+          }
+        }
+        planetConnection {
+          totalCount
+          planets {
+            name
+            id
+          }
+        }
       }
     }
   }
@@ -107,6 +142,10 @@ query allPlanets($first: Int, $after: String)  {
         surfaceWater
         residentConnection {
           totalCount
+          residents {
+            name
+            id
+          }
         }
         filmConnection {
           totalCount

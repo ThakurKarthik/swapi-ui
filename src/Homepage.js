@@ -2,9 +2,10 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import * as queries from './queries';
 import Table from './components/Table';
+import './Homepage.css';
 
 function StarWarsFetcher(props) {
-  const {query, dataKey, columns, detailPageUrl} = props;
+  const {query, dataKey, columns, detailPageUrl, title} = props;
   const { loading, error, data, fetchMore } = useQuery(query, {
     variables: {
       first: 10,
@@ -22,6 +23,7 @@ function StarWarsFetcher(props) {
   const pageInfo = responseData.pageInfo
   return (
     <Table
+      title={title}
       data={nodes}
       fullData = {responseData}
       columns={columns}
@@ -42,7 +44,7 @@ class Homepage extends React.Component {
   render() {
     return (
       <div>
-        Homepage
+        <h1 className='main-title'>Starwars</h1>
         <StarWarsFetcher
           title = "Films"
           dataKey = 'allFilms'

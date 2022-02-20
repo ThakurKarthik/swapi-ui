@@ -1,7 +1,21 @@
 .table {
   width: 100%;
-  margin: 0px 0px;
+  margin: 10px 0px;
   border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  border: 1px solid black;
+  text-align: center;
+}
+
+td {
+  border: 1px solid black;
+  text-align: center;
 }
 
 .column-row {

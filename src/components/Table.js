@@ -3,7 +3,7 @@ import {useNavigate}  from 'react-router-dom';
 import './Table.css';
 
 function Table(props) {
-  const { data = [], columns = [], fullData } = props;
+  const { data = [], columns = [], fullData, title } = props;
   const [pagination, setPagination] = useState(0);
   const navigate = useNavigate();  
   
@@ -16,6 +16,7 @@ function Table(props) {
   return (
     <div className="table">
       <table className="table-layout">
+        <caption>{title}</caption>
         <thead>
           <tr>
             {columns.map((column) => {
