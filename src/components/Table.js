@@ -9,6 +9,9 @@ function Table(props) {
   
   const totalCount = fullData.totalCount;
   const showPagination = totalCount > 10;
+  const leftIndexOfData = pagination * 10;
+  const rightIndexOfData = leftIndexOfData + 10;
+  const paginationData = data.slice(leftIndexOfData, rightIndexOfData);
   
   return (
     <div className="table">
@@ -21,13 +24,13 @@ function Table(props) {
           </tr>
         </thead>
         <tbody>
-          {data.map((lineItem) => {
+          {paginationData.map((lineItem) => {
             return (
-              <tr key={lineItem.node.id} className="line-item" onClick={() => {
-                navigate(props.detailPageUrl, {state: lineItem.node})
+              <tr key={lineItem.id} className="line-item" onClick={() => {
+                navigate(props.detailPageUrl, {state: lineItem})
               }}>
                 {columns.map((column) => {
-                  return <td key={column}>{lineItem.node[column] || 'NA'}</td>;
+                  return <td key={column}>{lineItem[column] || 'NA'}</td>;
                 })}
               </tr>
             );
@@ -40,17 +43,20 @@ function Table(props) {
             <div>
               <button onClick={() => setPagination(pagination - 1)}>
                 {'<- '}
-                {pagination * 10 + 1}
-                {' - '} {pagination * 10 + 10}
+                {(pagination - 1) * 10 + 1}
+                {' - '} {Math.min((pagination - 1) * 10 + 10, totalCount)}
               </button>
             </div>
           )}
-          <div className='pagination-right'>
-            <button onClick={() => setPagination(pagination + 1)}>
-              {(pagination + 1) * 10 + 1}
-              {' - '} {(pagination + 1) * 10 + 10} {' -> '}
+          {leftIndexOfData + 11 < Math.min(rightIndexOfData + 10, totalCount) && (<div className='pagination-right'>
+            <button onClick={() => {
+              setPagination(pagination + 1);
+              props.fetchNextData()
+            }}>
+              {leftIndexOfData + 11}
+              {' - '} {Math.min(rightIndexOfData + 10, totalCount)} {' -> '}
             </button>
-          </div>
+          </div>)}
         </div>
       )}
     </div>

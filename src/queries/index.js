@@ -6,6 +6,7 @@ query filmsQuery($first: Int, $after: String)  {
     pageInfo {
       hasNextPage
       hasPreviousPage
+      endCursor
     }
     totalCount
     edges {
@@ -30,6 +31,7 @@ query peopleQuery($first: Int, $after: String)  {
     pageInfo {
       hasNextPage
       hasPreviousPage
+      endCursor
     }
     totalCount
     edges {
@@ -88,6 +90,7 @@ query allPlanets($first: Int, $after: String)  {
     pageInfo {
       hasNextPage
       hasPreviousPage
+      endCursor
     }
     totalCount
     edges {
@@ -125,6 +128,7 @@ query species($first: Int, $after: String)  {
     pageInfo {
       hasNextPage
       hasPreviousPage
+      endCursor
     }
     totalCount
     edges {
@@ -170,6 +174,7 @@ query starships($first: Int, $after: String)  {
     pageInfo {
       hasNextPage
       hasPreviousPage
+      endCursor
     }
     totalCount
     edges {
@@ -215,6 +220,7 @@ query vehicles($first: Int, $after: String) {
     pageInfo {
       hasNextPage
       hasPreviousPage
+      endCursor
     }
     totalCount
     edges {

@@ -15,9 +15,32 @@ import Species from './components/Species';
 import StarShip from './components/StarShip';
 import Vehicle from './components/Vehicle';
 
+const cacheUpdateFn = ['allFilms', 'allPeople', 'allVehicles', 'allStarships', 'allSpecies', 'allPlanets'].reduce((cacheUpdate, dataKey) => {
+  cacheUpdate[dataKey] = {
+    keyArgs: false,
+    merge(existing={}, incoming) {
+      const totalEdges = [...((existing && existing.edges) || []), ...incoming.edges]
+      return {
+        ...incoming,
+        edges: totalEdges
+      }
+    }
+  }
+  return cacheUpdate
+}, {});
+
 const client = new ApolloClient({
   uri: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          ...cacheUpdateFn
+        }
+      }
+    }
+  }),
+  connectToDevTools: true
 });
 
 ReactDOM.render(

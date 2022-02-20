@@ -3,8 +3,9 @@ import { useQuery } from '@apollo/client';
 import * as queries from './queries';
 import Table from './components/Table';
 
-function Films() {
-  const { loading, error, data } = useQuery(queries.filmsQuery, {
+function StarWarsFetcher(props) {
+  const {query, dataKey, columns, detailPageUrl} = props;
+  const { loading, error, data, fetchMore } = useQuery(query, {
     variables: {
       first: 10,
     },
@@ -16,148 +17,74 @@ function Films() {
     console.log(error);
     return <div>Error</div>;
   }
-  console.log('film data', data);
+  const responseData = data[dataKey];
+  const nodes = responseData.edges.map(edge => edge.node);
+  const pageInfo = responseData.pageInfo
   return (
     <Table
-      data={data.allFilms.edges}
-      fullData = {data.allFilms}
-      columns={['title', 'releaseDate', 'director']}
-      detailPageUrl = '/film'
+      data={nodes}
+      fullData = {responseData}
+      columns={columns}
+      detailPageUrl = {detailPageUrl}
+      fetchNextData = {() => {
+        if(pageInfo.hasNextPage) {
+          fetchMore({
+            variables: {
+              after: pageInfo.endCursor
+            }
+          })
+        }
+      }}
     />
   );
 }
-
-function People() {
-  const { loading, error, data } = useQuery(queries.peopleQuery, {
-    variables: {
-      first: 10,
-    },
-  });
-  if (loading) {
-    return <div>Loading</div>;
-  }
-  if (error) {
-    console.log(error);
-    return <div>Error</div>;
-  }
-  console.log('people', data);
-  return (
-    <Table
-      data={data.allPeople.edges}
-      fullData = {data.allPeople}
-      columns={['name', 'birthYear', 'gender']}
-      detailPageUrl = '/person'
-    />
-  );
-}
-
-function Planets() {
-  const { loading, error, data } = useQuery(queries.planetQuery, {
-    variables: {
-      first: 10,
-    },
-  });
-  if (loading) {
-    return <div>Loading</div>;
-  }
-  if (error) {
-    console.log(error);
-    return <div>Error</div>;
-  }
-  console.log('planet', data);
-  return (
-    <Table
-      data={data.allPlanets.edges}
-      fullData = {data.allPlanets}
-      columns={['name', 'population', 'diameter']}
-      detailPageUrl = '/planet'
-    />
-  );
-}
-
-function Species() {
-  const { loading, error, data } = useQuery(queries.speciesQuery, {
-    variables: {
-      first: 10,
-    },
-  });
-  if (loading) {
-    return <div>Loading</div>;
-  }
-  if (error) {
-    console.log(error);
-    return <div>Error</div>;
-  }
-  console.log('species', data);
-  return (
-    <Table
-      data={data.allSpecies.edges}
-      fullData = {data.allSpecies}
-      columns={['name', 'classification', 'designation']}
-      detailPageUrl = '/species'
-    />
-  );
-}
-
-function Starships() {
-  const { loading, error, data } = useQuery(queries.starShipQuery, {
-    variables: {
-      first: 10,
-    },
-  });
-  if (loading) {
-    return <div>Loading</div>;
-  }
-  if (error) {
-    console.log(error);
-    return <div>Error</div>;
-  }
-  console.log('starship', data);
-  return (
-    <Table
-      data={data.allStarships.edges}
-      fullData = {data.allStarships}
-      columns={['name', 'model', 'starshipClass']}
-      detailPageUrl = '/star-ship'
-    />
-  );
-}
-
-function Vehicles() {
-  const { loading, error, data } = useQuery(queries.vehiclesQuery, {
-    variables: {
-      first: 10,
-    },
-  });
-  if (loading) {
-    return <div>Loading</div>;
-  }
-  if (error) {
-    console.log(error);
-    return <div>Error</div>;
-  }
-  console.log('vehicle', data);
-  return (
-    <Table
-      data={data.allVehicles.edges}
-      fullData = {data.allVehicles}
-      columns={['name', 'model', 'vehicleClass']}
-      detailPageUrl = '/vehicle'
-    />
-  );
-}
-
 class Homepage extends React.Component {
   render() {
     return (
       <div>
         Homepage
-        <Films/>
-        <People/>
-        <Planets/>
-        <Species/>
-        <Starships/>
-        <Vehicles/>
+        <StarWarsFetcher
+          title = "Films"
+          dataKey = 'allFilms'
+          detailPageUrl = '/film'
+          columns={['title', 'releaseDate', 'director']}
+          query = {queries.filmsQuery}
+        />
+        <StarWarsFetcher
+          title = "People"
+          dataKey = 'allPeople'
+          detailPageUrl = '/person'
+          columns={['name', 'birthYear', 'gender']}
+          query = {queries.peopleQuery}
+        />
+        <StarWarsFetcher
+          title = "Planets"
+          dataKey = 'allPlanets'
+          detailPageUrl = '/planet'
+          columns={['name', 'population', 'diameter']}
+          query = {queries.planetQuery}
+        />
+        <StarWarsFetcher
+          title = "Species"
+          dataKey = 'allSpecies'
+          detailPageUrl = '/species'
+          columns={['name', 'classification', 'designation']}
+          query = {queries.speciesQuery}
+        />
+        <StarWarsFetcher
+          title = "Starships"
+          dataKey = 'allStarships'
+          detailPageUrl = '/star-ship'
+          columns={['name', 'model', 'starshipClass']}
+          query = {queries.starShipQuery}
+        />
+        <StarWarsFetcher
+          title = "Vehicles"
+          dataKey = 'allVehicles'
+          detailPageUrl = '/vehicle'
+          columns={['name', 'model', 'vehicleClass']}
+          query = {queries.vehiclesQuery}
+        />
       </div>
     );
   }
